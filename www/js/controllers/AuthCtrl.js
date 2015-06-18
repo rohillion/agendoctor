@@ -1,7 +1,7 @@
-/*global agendando*/
+/*global agendoctor*/
 'use strict';
 
-agendando.controller('AuthCtrl', ['$scope', '$location', 'Auth', function ($scope, $location, Auth) {
+agendoctor.controller('AuthCtrl', ['$scope', '$location', 'Auth', function ($scope, $location, Auth) {
         if (Auth.signedIn()) {
             $location.path('/dashboard');
         }

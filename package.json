@@ -1,7 +1,7 @@
 {
-  "name": "agendando",
+  "name": "agendoctor",
   "version": "1.0.0",
-  "description": "agendando: An Ionic project",
+  "description": "agendoctor: An Ionic project",
   "dependencies": {
     "angularfire": "^1.1.1",
     "gulp": "^3.5.6",

@@ -1,9 +1,19 @@
 <ion-view view-title="Dashboard">
     <ion-content>
-            <div class="list">
-                <label class="item">
-                    <button class="button button-block button-positive" type="submit" ng-click="logout()">Logout</button>
-                </label>
-            </div>
+        <h1>Dashboard</h1>
+        <h4>{{calendarTitle}}</h4>
+        <div class="btn-group">
+            <button decrement="calendarView" date="calendarDay" mwl-date-modifier="" class="btn btn-primary ng-isolate-scope">
+                Previous
+            </button>
+            <button set-to-today="" date="calendarDay" mwl-date-modifier="" class="btn btn-default ng-isolate-scope">
+                Today
+            </button>
+            <button increment="calendarView" date="calendarDay" mwl-date-modifier="" class="btn btn-primary ng-isolate-scope">
+                Next
+            </button>
+        </div>
+        <!--<mwl-calendar view-title="calendarTitle" view="calendarView" day-view-start="00:00" current-day="calendarDay" events="events" auto-open="true" on-event-drop="onDrop(calendarEvent,calendarNewEventStart,calendarNewEventEnd)"></mwl-calendar>-->
+        <mwl-calendar view-title="calendarTitle" view="calendarView" current-day="calendarDay" events="events" auto-open="true" on-event-drop="onDrop(calendarEvent,calendarNewEventStart,calendarNewEventEnd)"></mwl-calendar>
     </ion-content>
 </ion-view>

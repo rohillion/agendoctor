@@ -3,9 +3,9 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var agendando = angular.module('agendando', ['ionic', 'firebase']);
+var agendoctor = angular.module('agendoctor', ['ionic', 'firebase', 'mwl.calendar']);
 
-agendando.run(['$ionicPlatform', '$rootScope', '$location', 'Auth', function ($ionicPlatform, $rootScope, $location, $Auth) {
+agendoctor.run(['$ionicPlatform', '$rootScope', '$location', 'Auth', function ($ionicPlatform, $rootScope, $location, $Auth) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -16,10 +16,10 @@ agendando.run(['$ionicPlatform', '$rootScope', '$location', 'Auth', function ($i
                 StatusBar.styleDefault();
             }
         });
-        
+
         $rootScope.$on('$stateChangeStart', function (event, next) {
             if (next.access !== undefined) {
-                if( (next.access.requiresLogin && !$Auth.signedIn()) || (!next.access.requiresLogin && $Auth.signedIn()) ){
+                if ((next.access.requiresLogin && !$Auth.signedIn()) || (!next.access.requiresLogin && $Auth.signedIn())) {
                     event.preventDefault();
                 }
             }
@@ -28,12 +28,27 @@ agendando.run(['$ionicPlatform', '$rootScope', '$location', 'Auth', function ($i
         .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
                 $stateProvider
 
-                        /*.state('menu', {
-                         url: "/menu",
-                         abstract: true,
-                         templateUrl: "templates/menu.html",
-                         controller: 'MenuCtrl'
-                         })*/
+                        .state('app', {
+                            url: "/app",
+                            abstract: true,
+                            templateUrl: "templates/menu.html",
+                            controller: 'AppCtrl'
+                        })
+
+                        .state('app.dashboard', {
+                            url: "/dashboard",
+                            access: {
+                                requiresLogin: true,
+                                /*requiredPermissions: ['Admin', 'UserManager'],
+                                 permissionType: 'AtLeastOne'*/
+                            },
+                            views: {
+                                'menuContent': {
+                                    templateUrl: "templates/dashboard.html",
+                                    controller: 'DashCtrl',
+                                }
+                            }
+                        })
 
                         .state('login', {
                             url: "/login",
@@ -50,21 +65,10 @@ agendando.run(['$ionicPlatform', '$rootScope', '$location', 'Auth', function ($i
                             access: {
                                 requiresLogin: false
                             }
-                        })
-
-                        .state('dashboard', {
-                            url: "/dashboard",
-                            templateUrl: "templates/dashboard.html",
-                            controller:'DashCtrl',
-                            access: {
-                                requiresLogin: true,
-                                /*requiredPermissions: ['Admin', 'UserManager'],
-                                permissionType: 'AtLeastOne'*/
-                            }
                         });
                 // if none of the above states are matched, use this as the fallback
-                $urlRouterProvider.otherwise('/login');
+                $urlRouterProvider.otherwise('/app/dashboard');
 
             }])
 
-        .constant('FIREBASE_URL', 'https://agendando.firebaseio.com/');
+        .constant('FIREBASE_URL', 'https://agendoctor.firebaseio.com/');

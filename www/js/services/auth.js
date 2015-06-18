@@ -1,7 +1,7 @@
-/*global agendando */
+/*global agendoctor */
 'use strict';
 
-agendando.factory('Auth', ['$firebaseObject', '$firebaseArray', '$firebaseAuth', 'FIREBASE_URL', '$location', function ($firebaseObject, $firebaseArray, $firebaseAuth, FIREBASE_URL, $location) {
+agendoctor.factory('Auth', ['$firebaseObject', '$firebaseArray', '$firebaseAuth', 'FIREBASE_URL', '$location', function ($firebaseObject, $firebaseArray, $firebaseAuth, FIREBASE_URL, $location) {
         var ref = new Firebase(FIREBASE_URL);
         var auth = $firebaseAuth(ref);
 

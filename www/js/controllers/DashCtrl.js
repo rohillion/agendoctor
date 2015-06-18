@@ -6,17 +6,50 @@
  * - retrieves and persists the model via the $firebaseArray service
  * - exposes the model to the template and provides event handlers
  */
-agendando.controller('DashCtrl', ['$scope', 'Auth', function NavCtrl($scope, Auth) {
+agendoctor.controller('DashCtrl', ['$scope', 'moment', 'Auth', 'Event', function DashCtrl($scope, moment, Auth, Event) {
 
-        $scope.logout = Auth.logout;
         $scope.user = Auth.user;
+        
+        $scope.calendarView = 'day';
+        $scope.calendarDay = new Date();
+        $scope.calendarTitle = 'The Calendar';
+        $scope.loaded = false;
+        console.log('loaded:' + $scope.loaded);
 
-        /*$scope.toggleTopicForm = function ($event) {
-            $scope.alert = '';
-            $mdBottomSheet.show({
-                templateUrl: 'app/views/TopicAddCtrlView.html',
-                controller: 'TopicAddCtrl',
-                targetEvent: $event
+        var events = Event.all;
+        
+        events.$loaded(function (items) {
+            $scope.loaded = true;
+            console.log('loaded:' + $scope.loaded)
+            angular.forEach(items, function (event, key) {
+                $scope.events.push({
+                    title: event.title,
+                    type: event.type,
+                    startsAt: moment(event.startsAt).toDate(),
+                    endsAt: moment(event.endsAt).toDate(),
+                    //editable: true,
+                });
             });
-        };*/
+
+            events.$watch(function (ref) {
+                console.log(ref);
+                var event = events.$getRecord(ref.key);
+                $scope.events.push({
+                    title: event.title,
+                    type: event.type,
+                    startsAt: moment(event.startsAt).toDate(),
+                    endsAt: moment(event.endsAt).toDate(),
+                    //editable: true,
+                });
+            });
+
+        }, function (error) {
+            console.log(error);
+        });
+
+        $scope.onDrop = function (calendarEvent, starts, ends) {
+            calendarEvent.startsAt = starts;
+            calendarEvent.endsAt = ends;
+        };
+
     }]);
