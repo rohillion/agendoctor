@@ -10,8 +10,8 @@
     angular.module('mwl.calendar').run([
         '$templateCache',
         function ($templateCache) {
-            $templateCache.put('src/templates/calendar.html', '<div class="cal-context" ng-switch="view"><div class="alert alert-danger" ng-switch-default>The value passed to the view attribute of the calendar is not set</div><div class="alert alert-danger" ng-hide="currentDay">The value passed to current-day attribute of the calendar is not set</div><mwl-calendar-year events="events" current-day="currentDay" on-event-click="onEventClick" on-event-drop="onEventDrop" on-edit-event-click="onEditEventClick" on-delete-event-click="onDeleteEventClick" on-timespan-click="onTimespanClick" edit-event-html="editEventHtml" delete-event-html="deleteEventHtml" auto-open="autoOpen" ng-switch-when="year"></mwl-calendar-year><mwl-calendar-month events="events" current-day="currentDay" on-event-click="onEventClick" on-event-drop="onEventDrop" on-edit-event-click="onEditEventClick" on-delete-event-click="onDeleteEventClick" on-timespan-click="onTimespanClick" edit-event-html="editEventHtml" delete-event-html="deleteEventHtml" auto-open="autoOpen" ng-switch-when="month"></mwl-calendar-month><mwl-calendar-week events="events" current-day="currentDay" on-event-click="onEventClick" on-event-drop="onEventDrop" day-view-start="dayViewStart" day-view-end="dayViewEnd" day-view-split="dayViewSplit || 30" ng-switch-when="week"></mwl-calendar-week><mwl-calendar-day events="events" current-day="currentDay" on-event-click="onEventClick" on-event-drop="onEventDrop" day-view-start="dayViewStart" day-view-end="dayViewEnd" day-view-split="dayViewSplit || 30" ng-switch-when="day"></mwl-calendar-day></div>');
-            $templateCache.put('src/templates/calendarDayView.html', '<div class="cal-day-box"><div class="row-fluid clearfix cal-row-head"><div class="span1 col-xs-1 cal-cell" ng-bind="vm.calendarConfig.i18nStrings.timeLabel"></div><div class="span11 col-xs-11 cal-cell" ng-bind="vm.calendarConfig.i18nStrings.eventsLabel"></div></div><div class="cal-day-panel clearfix" ng-style="{height: vm.dayViewHeight + \'px\'}"><mwl-calendar-hour-list day-view-start="dayViewStart" day-view-end="dayViewEnd" day-view-split="dayViewSplit"></mwl-calendar-hour-list><div class="pull-left day-event day-highlight" ng-class="\'dh-event-\' + event.type + \' \' + event.cssClass" ng-repeat="event in vm.view track by event.$id" ng-style="{top: event.top + \'px\', left: event.left + 60 + \'px\', height: event.height + \'px\'}" mwl-draggable="event.editable !== false" axis="y" snap-grid="{y: 30}" on-drag="vm.tempTimeChanged(event, y)" on-drag-end="vm.timeChanged(event, y)"><span class="cal-hours"><span ng-show="event.top == 0"><span ng-bind="(event.tempStartsAt || event.startsAt) | calendarDate:\'day\':true"></span>,</span> <span ng-bind="(event.tempStartsAt || event.startsAt) | calendarDate:\'time\':true"></span></span> <a href="javascript:;" class="event-item" ng-click="onEventClick({calendarEvent: event})"><span ng-bind-html="vm.$sce.trustAsHtml(event.title) | calendarTruncateEventTitle:20:event.height"></span></a></div></div></div>');
+            $templateCache.put('src/templates/calendar.html', '<div class="cal-context" ng-switch="view"><div class="alert alert-danger" ng-switch-default>The value passed to the view attribute of the calendar is not set</div><div class="alert alert-danger" ng-hide="currentDay">The value passed to current-day attribute of the calendar is not set</div><mwl-calendar-year events="events" current-day="currentDay" on-event-click="onEventClick" on-event-drop="onEventDrop" on-edit-event-click="onEditEventClick" on-delete-event-click="onDeleteEventClick" on-timespan-click="onTimespanClick" edit-event-html="editEventHtml" delete-event-html="deleteEventHtml" auto-open="autoOpen" ng-switch-when="year"></mwl-calendar-year><mwl-calendar-month events="events" current-day="currentDay" on-event-click="onEventClick" on-event-drop="onEventDrop" on-edit-event-click="onEditEventClick" on-delete-event-click="onDeleteEventClick" on-timespan-click="onTimespanClick" edit-event-html="editEventHtml" delete-event-html="deleteEventHtml" auto-open="autoOpen" ng-switch-when="month"></mwl-calendar-month><mwl-calendar-week events="events" current-day="currentDay" on-event-click="onEventClick" on-event-drop="onEventDrop" day-view-start="dayViewStart" day-view-end="dayViewEnd" day-view-split="dayViewSplit || 30" ng-switch-when="week"></mwl-calendar-week><mwl-calendar-day events="events" current-day="currentDay" on-event-click="onEventClick" on-event-drop="onEventDrop" day-view-start="dayViewStart" day-view-end="dayViewEnd" day-view-hour-range="dayViewHourRange || 60" day-view-split="dayViewSplit || 30" ng-switch-when="day"></mwl-calendar-day></div>');
+            $templateCache.put('src/templates/calendarDayView.html', '<div class="cal-day-box"><div class="row-fluid clearfix cal-row-head"><div class="span1 col-xs-1 cal-cell" ng-bind="vm.calendarConfig.i18nStrings.timeLabel"></div><div class="span11 col-xs-11 cal-cell" ng-bind="vm.calendarConfig.i18nStrings.eventsLabel"></div></div><div class="cal-day-panel clearfix" ng-style="{height: vm.dayViewHeight + \'px\'}"><mwl-calendar-hour-list day-view-start="dayViewStart" day-view-end="dayViewEnd" day-view-split="dayViewSplit" day-view-hour-range="dayViewHourRange"></mwl-calendar-hour-list><div class="pull-left day-event day-highlight" ng-class="\'dh-event-\' + event.type + \' \' + event.cssClass" ng-repeat="event in vm.view track by event.$id" ng-style="{top: event.top + \'px\', left: event.left + 60 + \'px\', height: event.height + \'px\'}" mwl-draggable="event.editable !== false" axis="y" snap-grid="{y: 30}" on-drag="vm.tempTimeChanged(event, y)" on-drag-end="vm.timeChanged(event, y)"><span class="cal-hours"><span ng-show="event.top == 0"><span ng-bind="(event.tempStartsAt || event.startsAt) | calendarDate:\'day\':true"></span>,</span> <span ng-bind="(event.tempStartsAt || event.startsAt) | calendarDate:\'time\':true"></span></span> <a href="javascript:;" class="event-item" ng-click="onEventClick({calendarEvent: event})"><span ng-bind-html="vm.$sce.trustAsHtml(event.title) | calendarTruncateEventTitle:20:event.height"></span></a></div></div></div>');
             $templateCache.put('src/templates/calendarHourList.html', '<div class="cal-day-panel-hour"><div class="cal-day-hour" ng-repeat="hour in vm.hours track by $index"><div class="row-fluid cal-day-hour-part"><div class="span1 col-xs-1"><strong ng-bind="hour.label"></strong></div><div class="span11 col-xs-11"></div></div><div class="row-fluid cal-day-hour-part"><div class="span1 col-xs-1"></div><div class="span11 col-xs-11"></div></div><div class="row-fluid cal-day-hour-part" ng-show="vm.dayViewSplit < 30"><div class="span1 col-xs-1"></div><div class="span11 col-xs-11"></div></div><div class="row-fluid cal-day-hour-part" ng-show="vm.dayViewSplit < 30"><div class="span1 col-xs-1"></div><div class="span11 col-xs-11"></div></div><div class="row-fluid cal-day-hour-part" ng-show="vm.dayViewSplit < 15"><div class="span1 col-xs-1"></div><div class="span11 col-xs-11"></div></div><div class="row-fluid cal-day-hour-part" ng-show="vm.dayViewSplit < 15"><div class="span1 col-xs-1"></div><div class="span11 col-xs-11"></div></div></div></div>');
             $templateCache.put('src/templates/calendarMonthDay.html', '<div mwl-droppable on-drop="vm.handleEventDrop(dropData.event, day.date)" class="cal-month-day" ng-class="{\n            \'cal-day-outmonth\': !day.inMonth,\n            \'cal-day-inmonth\': day.inMonth,\n            \'cal-day-weekend\': day.isWeekend,\n            \'cal-day-past\': day.isPast,\n            \'cal-day-today\': day.isToday,\n            \'cal-day-future\': day.isFuture\n          }"><small class="cal-events-num badge badge-important pull-left" ng-show="day.badgeTotal > 0" ng-bind="day.badgeTotal"></small> <span class="pull-right" data-cal-date ng-click="vm.calendarCtrl.drillDown(day.date)" ng-bind="day.label"></span><div class="cal-day-tick" ng-show="dayIndex === vm.openDayIndex && vm.view[vm.openDayIndex].events.length > 0"><i class="glyphicon glyphicon-chevron-up"></i> <i class="fa fa-chevron-up"></i></div><div ng-include="\'src/templates/calendarMonthEventsList.html\'"></div></div>');
             $templateCache.put('src/templates/calendarMonthEventsList.html', '<div class="events-list" ng-show="day.events.length > 0"><a ng-repeat="event in day.events | orderBy:\'startsAt\' track by event.$id" href="javascript:;" ng-click="onEventClick({calendarEvent: event})" class="pull-left event" ng-class="\'event-\' + event.type + \' \' + event.cssClass" ng-mouseenter="vm.highlightEvent(event, true)" ng-mouseleave="vm.highlightEvent(event, false)" tooltip-append-to-body="true" tooltip-html-unsafe="{{ (event.startsAt | calendarDate:\'time\':true) + \' - \' + event.title }}" mwl-draggable="event.editable !== false" drop-data="{event: event}"></a></div>');
@@ -225,21 +225,25 @@
                     events: eventsSorted
                 };
             }
-            function getDayView(events, currentDay, dayViewStart, dayViewEnd, dayViewSplit) {
+            function getDayView(events, currentDay, dayViewStart, dayViewEnd, dayViewSplit, dayViewHourRange) {
                 var dayStartHour = moment(dayViewStart || '00:00', 'HH:mm').hours();
+                var dayStartMinutes = moment(dayViewStart || '00:00', 'HH:mm').minutes();//Customization
                 var dayEndHour = moment(dayViewEnd || '23:00', 'HH:mm').hours();
                 var hourHeight = 60 / dayViewSplit * 30;
-                var calendarStart = moment(currentDay).startOf('day').add(dayStartHour, 'hours');
+                //var calendarStart = moment(currentDay).startOf('day').add(dayStartHour, 'hours');
+                var calendarStart = moment(currentDay).startOf('day').add(dayStartHour, 'hours').add(dayStartMinutes, 'minutes');//Customization
                 var calendarEnd = moment(currentDay).startOf('day').add(dayEndHour, 'hours');
-                var calendarHeight = (dayEndHour - dayStartHour + 1) * hourHeight;
-                var hourHeightMultiplier = hourHeight / 60;
+                //var calendarHeight = (dayEndHour - dayStartHour + 1) * hourHeight;
+                var calendarHeight = getDayViewHeight(dayViewStart, dayViewEnd, dayViewSplit, dayViewHourRange);//Customization
+                var hourHeightMultiplier = hourHeight / dayViewHourRange;
                 var buckets = [];
                 var eventsInPeriod = filterEventsInPeriod(events, moment(currentDay).startOf('day').toDate(), moment(currentDay).endOf('day').toDate());
                 return eventsInPeriod.map(function (event) {
                     if (moment(event.startsAt).isBefore(calendarStart)) {
                         event.top = 0;
                     } else {
-                        event.top = moment(event.startsAt).startOf('minute').diff(calendarStart.startOf('minute'), 'minutes') * hourHeightMultiplier - 2;
+                        //event.top = moment(event.startsAt).startOf('minute').diff(calendarStart.startOf('minute'), 'minutes') * hourHeightMultiplier - 2;
+                        event.top = moment(event.startsAt).startOf('minute').diff(calendarStart.startOf('minute'), 'minutes') * hourHeightMultiplier - 2;//Customization
                     }
                     if (moment(event.endsAt || event.startsAt).isAfter(calendarEnd)) {
                         event.height = calendarHeight - event.top;
@@ -296,11 +300,19 @@
                 weekView.events = newEvents;
                 return weekView;
             }
-            function getDayViewHeight(dayViewStart, dayViewEnd, dayViewSplit) {
+            /*function getDayViewHeight(dayViewStart, dayViewEnd, dayViewSplit) {
                 var dayViewStartM = moment(dayViewStart || '00:00', 'HH:mm');
                 var dayViewEndM = moment(dayViewEnd || '23:00', 'HH:mm');
-                var hourHeight = 60 / dayViewSplit * 30;
+                var hourHeight = (60 / dayViewSplit) * 30;
                 return (dayViewEndM.diff(dayViewStartM, 'hours') + 1) * hourHeight + 2;
+            }*/
+            //Customization.
+            function getDayViewHeight(dayViewStart, dayViewEnd, dayViewSplit, dayViewHourRange) {
+                var dayViewStartM = moment(dayViewStart || '00:00', 'HH:mm');
+                var dayViewEndM = moment(dayViewEnd || '23:00', 'HH:mm');
+                var dayViewHourRangeInt = parseInt(dayViewHourRange) || 60;
+                var rangeHeight = (60 / dayViewSplit) * 30;
+                return ((dayViewEndM.diff(dayViewStartM, 'minutes')/dayViewHourRangeInt)+1)*rangeHeight;
             }
             return {
                 getWeekDayNames: getWeekDayNames,
@@ -988,16 +1000,22 @@
         'calendarHelper',
         function ($scope, moment, calendarConfig, calendarHelper) {
             var vm = this;
-            var dayViewStart, dayViewEnd;
+            var dayViewStart, dayViewEnd, dayViewHourRange;//Customization
             function updateDays() {
                 dayViewStart = moment($scope.dayViewStart || '00:00', 'HH:mm');
                 dayViewEnd = moment($scope.dayViewEnd || '23:00', 'HH:mm');
+                dayViewHourRange = parseInt($scope.dayViewHourRange);//Customization
                 vm.dayViewSplit = parseInt($scope.dayViewSplit);
                 vm.hours = [];
                 var dayCounter = moment(dayViewStart);
-                for (var i = 0; i <= dayViewEnd.diff(dayViewStart, 'hours'); i++) {
+                /*for (var i = 0; i <= dayViewEnd.diff(dayViewStart, 'hours'); i++) {
                     vm.hours.push({label: calendarHelper.formatDate(dayCounter, calendarConfig.dateFormats.hour)});
-                    dayCounter.add(1, 'hour');
+                    dayCounter.add(dayViewHourRange, 'hour');
+                }*/
+                //Customization
+                for (var i = 0; i <= dayViewEnd.diff(dayViewStart, 'minutes'); i=i+dayViewHourRange) {
+                    vm.hours.push({label: calendarHelper.formatDate(dayCounter, calendarConfig.dateFormats.time)});
+                    dayCounter.add(dayViewHourRange, 'minute');
                 }
             }
             var originalLocale = moment.locale();
@@ -1017,7 +1035,8 @@
             scope: {
                 dayViewStart: '=',
                 dayViewEnd: '=',
-                dayViewSplit: '='
+                dayViewSplit: '=',
+                dayViewHourRange: '='//Customization
             }
         };
     });
@@ -1034,8 +1053,10 @@
             vm.calendarConfig = calendarConfig;
             vm.$sce = $sce;
             $scope.$on('calendar.refreshView', function () {
-                vm.dayViewHeight = calendarHelper.getDayViewHeight($scope.dayViewStart, $scope.dayViewEnd, $scope.dayViewSplit);
-                vm.view = calendarHelper.getDayView($scope.$parent.$parent.events, $scope.currentDay, $scope.dayViewStart, $scope.dayViewEnd, $scope.dayViewSplit);
+                //vm.dayViewHeight = calendarHelper.getDayViewHeight($scope.dayViewStart, $scope.dayViewEnd, $scope.dayViewSplit);
+                //vm.view = calendarHelper.getDayView($scope.$parent.$parent.events, $scope.currentDay, $scope.dayViewStart, $scope.dayViewEnd, $scope.dayViewSplit);
+                vm.dayViewHeight = calendarHelper.getDayViewHeight($scope.dayViewStart, $scope.dayViewEnd, $scope.dayViewSplit, $scope.dayViewHourRange);//Customization
+                vm.view = calendarHelper.getDayView($scope.$parent.$parent.events, $scope.currentDay, $scope.dayViewStart, $scope.dayViewEnd, $scope.dayViewSplit, $scope.dayViewHourRange);//Customization
             });
             vm.timeChanged = function (event, minuteChunksMoved) {
                 var minutesDiff = minuteChunksMoved * $scope.dayViewSplit;
@@ -1065,7 +1086,8 @@
                 onEventDrop: '=',
                 dayViewStart: '=',
                 dayViewEnd: '=',
-                dayViewSplit: '='
+                dayViewSplit: '=',
+                dayViewHourRange: '='//Customization
             },
             controller: 'MwlCalendarDayCtrl as vm'
         };
@@ -1082,6 +1104,7 @@
         function ($scope, $timeout, $window, $locale, moment, calendarTitle, calendarDebounce) {
             var vm = this;
             $scope.$parent.$parent.events = $scope.$parent.$parent.events || [];
+            console.log($scope);
             vm.changeView = function (view, newDay) {
                 $scope.view = view;
                 $scope.currentDay = newDay;
@@ -1164,7 +1187,8 @@
                 onDrillDownClick: '&',
                 dayViewStart: '@',
                 dayViewEnd: '@',
-                dayViewSplit: '@'
+                dayViewSplit: '@',
+                dayViewHourRange: '@'//Customization
             },
             controller: 'MwlCalendarCtrl as vm'
         };

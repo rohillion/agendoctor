@@ -55,8 +55,8 @@ agendoctor.controller('AppCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'Ev
             Event.create({
                 title: title,
                 type: 'warning',
-                startsAt: '2015-06-19 0' + i + ':00',
-                endsAt: '2015-06-19 0' + c + ':00',
+                startsAt: '2015-06-20 1' + i + ':00',
+                endsAt: '2015-06-20 1' + c + ':00',
                 description: description,
                 deletedAt: false,
                 authorUID: Auth.user.uid,
