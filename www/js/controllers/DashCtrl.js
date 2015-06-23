@@ -27,7 +27,7 @@ agendoctor.controller('DashCtrl', ['$scope', 'moment', 'Auth', 'Event', function
                     type: event.type,
                     startsAt: moment(event.startsAt).toDate(),
                     endsAt: moment(event.endsAt).toDate(),
-                    //editable: true,
+                    description: event.description,
                 });
             });
 
@@ -39,7 +39,7 @@ agendoctor.controller('DashCtrl', ['$scope', 'moment', 'Auth', 'Event', function
                     type: event.type,
                     startsAt: moment(event.startsAt).toDate(),
                     endsAt: moment(event.endsAt).toDate(),
-                    //editable: true,
+                    description: event.description,
                 });
             });
 
