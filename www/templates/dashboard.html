@@ -3,7 +3,7 @@
         
         <div class="calendar-nav-date">
             <h1>{{viewTitle.date()}}</h1>
-            <h2>{{moment().weekday(viewTitle.isoWeekday())}}</h2>
+            <h2>{{viewTitle.locale('en').format('dddd')}}</h2>
         </div>
         
         <div class="btn-group">
@@ -18,7 +18,7 @@
             </button>
         </div>
     </div>
-    <ion-content style="top:184px;border-top: 1px solid #ccc;padding-top:0;background-color: #ffffff;">
+    <ion-content style="top:184px;padding-top:0;background-color: #ffffff;">
         <mwl-calendar day-view-hour-range="30" day-view-start="08:30" day-view-end="17:30" view-title="calendarTitle" view="calendarView" current-day="calendarDay" events="events" auto-open="true" on-event-drop="onDrop(calendarEvent,calendarNewEventStart,calendarNewEventEnd)"></mwl-calendar>
     </ion-content>
 </ion-view>

@@ -13,8 +13,9 @@ agendoctor.controller('DashCtrl', ['$scope', 'moment', 'Auth', 'Event', function
         $scope.calendarView = 'day';
         $scope.calendarDay = new Date();
         $scope.calendarTitle = 'The Calendar';
+        $scope.calendarDayName = moment($scope.calendarDay).format('dddd');
         $scope.loaded = false;
-        console.log('loaded:' + $scope.loaded);
+        
 
         var events = Event.all;
         

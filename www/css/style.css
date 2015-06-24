@@ -2,6 +2,10 @@
     font-family: AvenirLTStd;
     src: url("../fonts/AvenirLTStd-Book.otf") format("opentype");
 }
+@font-face {
+    font-family: AvenirLTStdLight;
+    src: url("../fonts/AvenirLTStd-Light.otf") format("opentype");
+}
 
 body{
     color:#1d1d26;
@@ -608,26 +612,38 @@ a.cal-event-week {
   }
 }
 /* CUSTOM */
+.bar {
+    background-size: 100% 0px;
+}
 .calendar-nav{
     position: relative;
     height: 145px;
 }
 .calendar-nav-date{
-    width: 100px;
+    width: 180px;
     position: absolute;
-    top: 94px;
+    top: 4em;
     left: 50%;
-    margin-left: -50px;
-    text-align:center;
+    margin-left: -90px;
+    text-align: center;
 }
 .calendar-nav-date h1,.calendar-nav-date h2{
     color: #fff;
+    font-family:'AvenirLTStdLight', georgia, serif;
+}
+.calendar-nav-date h1{
+    font-size: 5em;
+    margin-bottom: 0;
+}
+.calendar-nav-date h2{
+    margin: 0;
+    font-size: 1.5em;
 }
 .calendar-nav .nav-button{
-    height: 70px;
+    height: 5em;
     background: none;
     position: absolute;
-    top: 80px;
+    top: 2.5em;
     border: none;
     color: white;
     font-size: 22px;
