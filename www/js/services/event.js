@@ -6,9 +6,11 @@
  * - retrieves and persists the model via the $firebaseArray service
  * - exposes the model to the template and provides event handlers
  */
-agendoctor.factory('Event', ['$firebaseArray', '$firebaseObject', 'FIREBASE_URL', function ($firebaseArray, $firebaseObject, FIREBASE_URL) {
+agendoctor.factory('Event', ['$firebaseArray', '$firebaseObject', 'FIREBASE_URL', 'Auth', function ($firebaseArray, $firebaseObject, FIREBASE_URL,Auth) {
         var ref = new Firebase(FIREBASE_URL);
-        var events = $firebaseArray(ref.child('events').orderByChild("deletedAt").equalTo(false));
+        //var events = $firebaseArray(ref.child('events').orderByChild("deletedAt").equalTo(false));
+        var events = $firebaseArray(ref.child('events').orderByChild("authorUID").equalTo(Auth.user.uid));
+        
 
         var Event = {
             all: events,
@@ -19,13 +21,19 @@ agendoctor.factory('Event', ['$firebaseArray', '$firebaseObject', 'FIREBASE_URL'
                     return eventRef;
                 });
             },
+            edit: function (input) {
+                var event = ref.child('events').child(input.key)
+                event.child("title").set(input.title);
+                event.child("description").set(input.description);
+                return event;
+            },
             get: function (eventId) {
                 return $firebaseObject(ref.child('events').child(eventId)).$loaded();
                 //return events.$getRecord(eventId);
             },
             delete: function (event) {
                 return ref.child('events')
-                            .child(event.$id)
+                            .child(event.key)
                             .child("deletedAt").set(Math.floor(Date.now() / 1000));
             },
             comments: function (eventId) {

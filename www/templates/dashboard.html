@@ -19,6 +19,6 @@
         </div>
     </div>
     <ion-content style="top:184px;padding-top:0;background-color: #ffffff;">
-        <mwl-calendar day-view-hour-range="30" day-view-start="08:30" day-view-end="17:30" view-title="calendarTitle" view="calendarView" current-day="calendarDay" events="events" auto-open="true" on-event-drop="onDrop(calendarEvent,calendarNewEventStart,calendarNewEventEnd)"></mwl-calendar>
+        <mwl-calendar on-event-click="eventClicked(calendarEvent)" day-view-hour-range="30" day-view-start="08:30" day-view-end="17:30" view-title="calendarTitle" view="calendarView" current-day="calendarDay" events="events" auto-open="true"></mwl-calendar>
     </ion-content>
 </ion-view>

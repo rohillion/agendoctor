@@ -22,8 +22,8 @@ agendoctor.controller('CreateEventCtrl', ['$scope', '$ionicModal', 'moment', 'Au
         });
         $scope.createEventModal = function (time) {
             $scope.time = time;
-            console.log(calendarTitle.getDay());
-            $scope.newEventDate = time + ' ' + calendarTitle.getDay().locale('en').format('dddd') + ' ' + calendarTitle.getDay().date() + ' of ' +calendarTitle.getDay().locale('en').format('MMMM');
+            
+            $scope.newEventDate = time + ' ' + calendarTitle.getDay().locale('en').format('dddd') + ' ' + calendarTitle.getDay().date() + ' of ' + calendarTitle.getDay().locale('en').format('MMMM');
             $scope.addmodal.show();
         };
         $scope.createEventModalClose = function () {
@@ -33,18 +33,9 @@ agendoctor.controller('CreateEventCtrl', ['$scope', '$ionicModal', 'moment', 'Au
         $scope.$on('$destroy', function () {
             $scope.addmodal.remove();
         });
-        // Execute action on hide modal
-        $scope.$on('modal.hidden', function () {
-            // Execute action
-        });
-        // Execute action on remove modal
-        $scope.$on('modal.removed', function () {
-            // Execute action
-        });
 
         $scope.newEvent = {};
         
-        var i = 0, c;
         $scope.addEvent = function () {
             
             var title = $scope.newEvent.title? $scope.newEvent.title.trim() : '';
@@ -55,15 +46,14 @@ agendoctor.controller('CreateEventCtrl', ['$scope', '$ionicModal', 'moment', 'Au
                 return;
             }
             
-            i++;
-            c = i + 1;
+            var startsAt = calendarTitle.getDay().format('YYYY-MM-DD ') + $scope.time;
+            var endsAt = moment(startsAt).add(30, 'm').format('YYYY-MM-DD HH:mm');
             
             Event.create({
                 title: title,
                 type: 'warning',
-                //startsAt: '2015-06-26 '+$scope.time,
-                startsAt: '2015-06-26 1' + i + ':00',
-                endsAt: '2015-06-26 1' + c + ':00',
+                startsAt: startsAt,
+                endsAt: endsAt,
                 description: description,
                 deletedAt: false,
                 authorUID: Auth.user.uid,

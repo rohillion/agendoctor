@@ -647,11 +647,11 @@ a.cal-event-week {
     border: none;
     color: white;
     font-size: 22px;
-    width: 50px;
+    width: 70px;
 }
 .calendar-nav .nav-button.right{
-    right: 20px;
+    right: 0px;
 }
 .calendar-nav .nav-button.left{
-    left: 20px;
+    left: 0px;
 }
