@@ -6,12 +6,9 @@
  * - retrieves and persists the model via the $firebaseArray service
  * - exposes the model to the template and provides event handlers
  */
-agendoctor.controller('DashCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'Event', 'calendarTitle', 'EventMiddleman',function DashCtrl($scope, $ionicModal, moment, Auth, Event, calendarTitle, EventMiddleman) {
+agendoctor.controller('DatePickerCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'calendarTitle', 'Event', function DatePickerCtrl($scope, $ionicModal, moment, Auth, calendarTitle, Event) {
 
-        $scope.user = Auth.user;
-        
-        $scope.events = EventMiddleman.get();
-    console.log($scope.events);
+    
         $scope.event = {};
         $scope.calendarView = 'day';
         $scope.calendarDay = new Date();
@@ -39,9 +36,7 @@ agendoctor.controller('DashCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'E
                     });
                 }
             });
-            console.log(EventMiddleman.get());
-            EventMiddleman.set($scope.events);
-            console.log(EventMiddleman.get());
+
             //Watch events fbArray for changes
             events.$watch(function (ref) {
                 console.log(ref);
@@ -83,52 +78,72 @@ agendoctor.controller('DashCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'E
             console.log(error);
         });
     
-        
-        $ionicModal.fromTemplateUrl('templates/edit_event_modal.html', {
+    console.log($scope);
+    console.log('pasa');
+    
+        $ionicModal.fromTemplateUrl('templates/datepicker.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function (modal) {
-            $scope.editmodal = modal;
+            $scope.dapickermodal = modal;
         });
     
-        //Show edit event modal.
-        $scope.eventClicked = function (event) {
-            $scope.event = event;
-            $scope.event.eventDate = moment(event.startsAt).format('HH:mm') + ' ' + calendarTitle.getDay().locale('en').format('dddd') + ' ' + calendarTitle.getDay().date() + ' of ' + calendarTitle.getDay().locale('en').format('MMMM');
-            $scope.editmodal.show();
+        //Show datepicker event modal.
+        $scope.showDatePicker = function (event) {
+            $scope.dapickermodal.show();
         };
     
-        //Close edit event modal.
-        $scope.editEventModalClose = function () {
-            $scope.editmodal.hide();
-        };
-    
-        //Remove edit event modal from DOM.
-        $scope.$on('$destroy', function () {
-            $scope.editmodal.remove();
+        $ionicModal.fromTemplateUrl('templates/create_event_modal.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            $scope.addmodal = modal;
         });
-        
-        //Save changes to event.
-        $scope.saveEvent = function () {
+    
+        $scope.createEventModal = function (time) {
+            $scope.time = time;
             
-            var title = $scope.event.title? $scope.event.title.trim() : '';
-            var description = $scope.event.description? $scope.event.description.trim() : '';
+            $scope.newEventDate = time + ' ' + calendarTitle.getDay().locale('en').format('dddd') + ' ' + calendarTitle.getDay().date() + ' of ' + calendarTitle.getDay().locale('en').format('MMMM');
+            $scope.addmodal.show();
+        };
+        $scope.createEventModalClose = function () {
+            $scope.addmodal.hide();
+        };
+        //Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function () {
+            $scope.addmodal.remove();
+        });
+
+        $scope.newEvent = {};
+        
+        $scope.addEvent = function () {
+            
+            var title = $scope.newEvent.title? $scope.newEvent.title.trim() : '';
+            var description = $scope.newEvent.description? $scope.newEvent.description.trim() : '';
             
             if (!title.length) {
                 console.log('Please fill the title');
                 return;
             }
             
-            Event.edit($scope.event);
-            $scope.event = {};
-            $scope.editmodal.hide();
-        }
-        
-        $scope.deleteEvent = function(){
-            Event.delete($scope.event);
-            //$scope.events.splice($scope.events.indexOf($scope.event), 1);
-            $scope.event = {};
-            $scope.editmodal.hide();
+            var startsAt = calendarTitle.getDay().format('YYYY-MM-DD ') + $scope.time;
+            var endsAt = moment(startsAt).add(30, 'm').format('YYYY-MM-DD HH:mm');
+            
+            Event.create({
+                title: title,
+                type: 'warning',
+                startsAt: startsAt,
+                endsAt: endsAt,
+                description: description,
+                deletedAt: false,
+                authorUID: Auth.user.uid,
+            }).then(function (ref) {
+                var id = ref.key();
+                console.log("added record with id " + id);
+                //events.$indexFor(id); // returns location in the array
+            });
+            $scope.newEvent = {};
+            $scope.addmodal.hide();
         }
 
     }]);
