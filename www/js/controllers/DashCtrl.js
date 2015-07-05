@@ -6,42 +6,41 @@
  * - retrieves and persists the model via the $firebaseArray service
  * - exposes the model to the template and provides event handlers
  */
-agendoctor.controller('DashCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'Event', 'calendarTitle', 'EventMiddleman',function DashCtrl($scope, $ionicModal, moment, Auth, Event, calendarTitle, EventMiddleman) {
+agendoctor.controller('DashCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'Event',function DashCtrl($scope, $ionicModal, moment, Auth, Event) {
 
         $scope.user = Auth.user;
         
-        $scope.events = EventMiddleman.get();
-    console.log($scope.events);
-        $scope.event = {};
-        $scope.calendarView = 'day';
-        $scope.calendarDay = new Date();
         $scope.time;
-        $scope.calendarTitle;
-        //$scope.calendarDayName = moment($scope.calendarDay).format('dddd');
         $scope.loaded = false;
+        $scope.events = [];
 
         var events = Event.all;
-        var event;
+    
+        $scope.saraza = function(){
+            console.log('muestro');
+        }
         
         //OnLoad events populate calendar array; 
         events.$loaded(function (items) {
             $scope.loaded = true;
             angular.forEach(items, function (event, key) {
-                if(!event.deletedAt){
+                if(!event.deletedAt){        
                     $scope.events.push({
                         key: event.$id,
                         title: event.title,
                         type: event.type,
-                        startsAt: moment(event.startsAt).toDate(),
-                        endsAt: moment(event.endsAt).toDate(),
+                        date: event.startsAt,
+                        startsAt: moment(event.startsAt).format('dddd D. MMMM'),
+                        //endsAt: moment(event.endsAt).toDate(),
+                        //startsTime: parseInt(moment(event.startsAt).format('HHmm')),
+                        startsTime: moment(event.startsAt).format('HH:mm'),
                         description: event.description,
                         deletedAt: event.deletedAt,
                     });
                 }
+                
             });
-            console.log(EventMiddleman.get());
-            EventMiddleman.set($scope.events);
-            console.log(EventMiddleman.get());
+
             //Watch events fbArray for changes
             events.$watch(function (ref) {
                 console.log(ref);
@@ -84,7 +83,7 @@ agendoctor.controller('DashCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'E
         });
     
         
-        $ionicModal.fromTemplateUrl('templates/edit_event_modal.html', {
+        $ionicModal.fromTemplateUrl('templates/modals/edit_event.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function (modal) {

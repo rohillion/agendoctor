@@ -6,7 +6,7 @@
  * - retrieves and persists the model via the $firebaseArray service
  * - exposes the model to the template and provides event handlers
  */
-agendoctor.controller('CreateEventCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'calendarTitle', 'Event', function CreateEventCtrl($scope, $ionicModal, moment, Auth, calendarTitle, Event) {
+agendoctor.controller('CreateEventCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'Event', function CreateEventCtrl($scope, $ionicModal, moment, Auth, Event) {
 
     
         $scope.user = Auth.user;
@@ -14,7 +14,7 @@ agendoctor.controller('CreateEventCtrl', ['$scope', '$ionicModal', 'moment', 'Au
         $scope.loaded = false;
         $scope.time;
     
-        $ionicModal.fromTemplateUrl('templates/create_event_modal.html', {
+        $ionicModal.fromTemplateUrl('templates/modals/create_event.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function (modal) {

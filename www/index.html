@@ -15,13 +15,13 @@
         <!-- firebase & angularfire libraries -->
         <script src="lib/firebase/firebase.js"></script>
         <script src="lib/angularfire/dist/angularfire.min.js"></script>
+        <script src="lib/angular-filter/dist/angular-filter.min.js"></script>
 
         <!-- plugin dependencies -->
-        <script src="lib/moment/min/moment-with-locales.min.js"></script>
-        <script src="lib/interact/interact.min.js"></script>
-        <script src="lib/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js"></script>
+        <script src="lib/moment/min/moment.min.js"></script>
 
         <!-- cordova script (this will be a 404 during development) -->
+        <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
         <script src="cordova.js"></script>
 
         <!-- your app's js -->
@@ -30,14 +30,16 @@
         <!-- services -->
         <script src="js/services/auth.js"></script>
         <script src="js/services/event.js"></script>
-        <script src="js/services/eventMiddleman.js"></script>
+        
+        <!-- directives -->
+        <script src="js/directives/timeline.js"></script>
 
         <!-- controllers -->
         <script src="js/controllers/AppCtrl.js"></script>
         <script src="js/controllers/AuthCtrl.js"></script>
         <script src="js/controllers/DashCtrl.js"></script>
         <script src="js/controllers/CreateEventCtrl.js"></script>
-        <script src="js/controllers/DatePickerCtrl.js"></script>
+        <script src="js/controllers/DatePickerModalCtrl.js"></script>
     </head>
     <body ng-app="agendoctor">
         <ion-nav-view></ion-nav-view>

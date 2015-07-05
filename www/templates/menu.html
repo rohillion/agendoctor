@@ -1,19 +1,21 @@
 <ion-side-menus enable-menu-with-back-views="false">
     <ion-side-menu-content>
         <ion-nav-bar class="bar-positive">
-            <ion-nav-back-button>
-            </ion-nav-back-button>
+            
+            <ion-nav-back-button></ion-nav-back-button>
 
             <ion-nav-buttons side="left">
-                <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-                </button>
+                <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
             </ion-nav-buttons>
-            <ion-nav-buttons side="right" ng-controller="DatePickerCtrl">
-                <button class="button button-icon button-clear ion-android-add" ng-click="showDatePicker()">
-                </button>
+            
+            <ion-nav-buttons side="right">
+                <button ng-controller="DatePickerModalCtrl" class="button button-icon button-clear ion-android-add" ng-click="showDatePicker()"></button>
             </ion-nav-buttons>
+            
         </ion-nav-bar>
+        
         <ion-nav-view name="menuContent"></ion-nav-view>
+        
     </ion-side-menu-content>
 
     <ion-side-menu side="left">

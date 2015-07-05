@@ -78,9 +78,6 @@ agendoctor.controller('DatePickerCtrl', ['$scope', '$ionicModal', 'moment', 'Aut
             console.log(error);
         });
     
-    console.log($scope);
-    console.log('pasa');
-    
         $ionicModal.fromTemplateUrl('templates/datepicker.html', {
             scope: $scope,
             animation: 'slide-in-up'
