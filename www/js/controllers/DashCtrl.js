@@ -15,16 +15,12 @@ agendoctor.controller('DashCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'E
         $scope.events = [];
 
         var events = Event.all;
-    
-        $scope.saraza = function(){
-            console.log('muestro');
-        }
         
         //OnLoad events populate calendar array; 
         events.$loaded(function (items) {
             $scope.loaded = true;
             angular.forEach(items, function (event, key) {
-                if(!event.deletedAt){        
+                if(!event.deletedAt){
                     $scope.events.push({
                         key: event.$id,
                         title: event.title,
@@ -38,7 +34,6 @@ agendoctor.controller('DashCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'E
                         deletedAt: event.deletedAt,
                     });
                 }
-                
             });
 
             //Watch events fbArray for changes
