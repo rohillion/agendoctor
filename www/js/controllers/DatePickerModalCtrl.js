@@ -6,11 +6,13 @@
  * - retrieves and persists the model via the $firebaseArray service
  * - exposes the model to the template and provides event handlers
  */
-agendoctor.controller('DatePickerModalCtrl', ['$scope', '$ionicModal', 'moment', 'Event', '$cordovaDatePicker', function DatePickerModalCtrl($scope, $ionicModal, moment, Event, $cordovaDatePicker) {
+agendoctor.controller('DatePickerModalCtrl', ['$scope', '$ionicModal', '$ionicSlideBoxDelegate', '$ionicScrollDelegate', 'moment', 'Event', '$cordovaDatePicker', function DatePickerModalCtrl($scope, $ionicModal, $ionicSlideBoxDelegate, $ionicScrollDelegate, moment, Event, $cordovaDatePicker) {
     
         var shiftsAvailable,shiftAvailable;
         var shiftMinutes = 30;
         var shiftsTaken = [];
+        $scope.newEventDate = moment(new Date()).format('dddd D. MMMM');
+        $scope.newEventShift = '';
     
         $scope.shifts = [];
     
@@ -85,11 +87,24 @@ agendoctor.controller('DatePickerModalCtrl', ['$scope', '$ionicModal', 'moment',
             animation: 'slide-in-up'
         }).then(function (modal) {
             $scope.datePickerModal = modal;
+			$scope.datePickerModalSlider = $ionicSlideBoxDelegate.$getByHandle('modalSlider');
+			$scope.datePickerModalSlider.enableSlide(false);
         });
     
         $scope.showDatePicker = function () {
-            $scope.datePickerModal.show();
+            $scope.datePickerModalSlider.slide(0);
+			$scope.itemSelected = false;	
+			$scope.datePickerModal.show();
         };
+    
+        $scope.selectShift = function(shift) {
+            $scope.newEventShift = shift;
+            $ionicSlideBoxDelegate.$getByHandle('modalSlider').next();
+            //console.log($ionicScrollDelegate.$getByHandle('datepickerModalContent').getScrollPosition());
+            $scope.scrollFix = $ionicScrollDelegate.$getByHandle('datepickerModalContent').getScrollPosition().top;
+            //$ionicScrollDelegate.$getByHandle('datepickerModalContent').getScrollPosition().top;
+            $ionicScrollDelegate.$getByHandle('datepickerModalContent').freezeScroll(true);
+		};
     
         /*$scope.showDatePicker = function () {
             var options = {
@@ -110,7 +125,12 @@ agendoctor.controller('DatePickerModalCtrl', ['$scope', '$ionicModal', 'moment',
         };*/
     
         $scope.closeDatePicker = function () {
-            $scope.datePickerModal.hide();
+            if ($scope.datePickerModalSlider.currentIndex() == 0){
+				$scope.datePickerModal.hide();
+            }else{
+				$scope.datePickerModalSlider.previous();
+                $ionicScrollDelegate.$getByHandle('datepickerModalContent').freezeScroll(false);
+            }
         };
     
         //Cleanup the modal when we're done with it!
