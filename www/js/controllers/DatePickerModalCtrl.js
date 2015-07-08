@@ -6,12 +6,15 @@
  * - retrieves and persists the model via the $firebaseArray service
  * - exposes the model to the template and provides event handlers
  */
-agendoctor.controller('DatePickerModalCtrl', ['$scope', '$ionicModal', '$ionicSlideBoxDelegate', '$ionicScrollDelegate', 'moment', 'Event', '$cordovaDatePicker', function DatePickerModalCtrl($scope, $ionicModal, $ionicSlideBoxDelegate, $ionicScrollDelegate, moment, Event, $cordovaDatePicker) {
+agendoctor.controller('DatePickerModalCtrl', ['$scope', '$cordovaDatePicker', '$ionicModal', '$ionicSlideBoxDelegate', '$ionicScrollDelegate', 'moment', 'Auth', 'Event', 'ShiftsAvailable', function DatePickerModalCtrl($scope, $cordovaDatePicker, $ionicModal, $ionicSlideBoxDelegate, $ionicScrollDelegate, moment, Auth, Event, ShiftsAvailable) {
     
-        var shiftsAvailable,shiftAvailable;
-        var shiftMinutes = 30;
+        $scope.user = Auth.user;
+    
+        
         var shiftsTaken = [];
-        $scope.newEventDate = moment(new Date()).format('dddd D. MMMM');
+        $scope.appointment = {};
+        $scope.appointmentDate = moment(new Date());
+        $scope.appointmentDateFormated = $scope.appointmentDate.format('dddd D. MMMM');
         $scope.newEventShift = '';
     
         $scope.shifts = [];
@@ -26,10 +29,8 @@ agendoctor.controller('DatePickerModalCtrl', ['$scope', '$ionicModal', '$ionicSl
                     shiftsTaken.push(moment(event.startsAt).format('YYYYMMDDHHmm'));
                 }
             });
-            shiftsTaken.push('201507060930');
-            shiftsTaken.push('201507061030');
         
-            var shiftsHours = [
+            var workingHours = [
                 {
                     monday: [
                         {
@@ -50,34 +51,8 @@ agendoctor.controller('DatePickerModalCtrl', ['$scope', '$ionicModal', '$ionicSl
                 }
             ];
     
-            angular.forEach(shiftsHours, function (dayShifts) {
-
-                angular.forEach(dayShifts, function (shifts, dayName) {
-
-                    //console.log(dayName);
-                    $scope.shifts[dayName] = [];
-
-                    angular.forEach(shifts, function (shift,i) {
-                        //i++;
-
-                        //calculate differnce between to and from shift hours.
-                        shiftsAvailable = moment(shift.to,"HH:mm").diff(moment(shift.from,"HH:mm"), 'minutes') / shiftMinutes;
-
-                        //console.log( 'Franja '+i+': '+ shiftsAvailable +' turnos' );
-
-                        shiftAvailable = moment(shift.from,"HH:mm");
-
-                        for(var s = 1; s <= shiftsAvailable; s++){
-                            //console.log('Turno: '+ shiftAvailable.format("HH:mm"));
-
-                            if(shiftsTaken.indexOf(shiftAvailable.format("YYYYMMDDHHmm")) === -1)
-                                $scope.shifts[dayName].push(shiftAvailable.format("HH:mm"));
-                            shiftAvailable = moment(shiftAvailable,"HH:mm").add(shiftMinutes, 'minutes');
-                        }
-                    });
-                });
-            });
-
+            $scope.shifts = ShiftsAvailable.all(workingHours, shiftsTaken);
+            
             console.log($scope.shifts);
     
         });
@@ -100,9 +75,7 @@ agendoctor.controller('DatePickerModalCtrl', ['$scope', '$ionicModal', '$ionicSl
         $scope.selectShift = function(shift) {
             $scope.newEventShift = shift;
             $ionicSlideBoxDelegate.$getByHandle('modalSlider').next();
-            //console.log($ionicScrollDelegate.$getByHandle('datepickerModalContent').getScrollPosition());
             $scope.scrollFix = $ionicScrollDelegate.$getByHandle('datepickerModalContent').getScrollPosition().top;
-            //$ionicScrollDelegate.$getByHandle('datepickerModalContent').getScrollPosition().top;
             $ionicScrollDelegate.$getByHandle('datepickerModalContent').freezeScroll(true);
 		};
     
@@ -137,5 +110,36 @@ agendoctor.controller('DatePickerModalCtrl', ['$scope', '$ionicModal', '$ionicSl
         $scope.$on('$destroy', function () {
             $scope.datePickerModal.remove();
         });
+    
+        $scope.addEvent = function () {
+            
+            var title = $scope.appointment.title? $scope.appointment.title.trim() : '';
+            var description = $scope.appointment.description? $scope.appointment.description.trim() : '';
+            
+            if (!title.length) {
+                console.log('Please fill the title');
+                return;
+            }
+            
+            var startsAt = $scope.appointmentDate.format('YYYY-MM-DD ') + $scope.newEventShift;
+            var endsAt = false;
+            
+            Event.create({
+                title: title,
+                type: 'warning',
+                startsAt: startsAt,
+                endsAt: endsAt,
+                description: description,
+                deletedAt: false,
+                authorUID: Auth.user.uid,
+            }).then(function (ref) {
+                var id = ref.key();
+                console.log("added record with id " + id);
+                //events.$indexFor(id); // returns location in the array
+            });
+            $ionicScrollDelegate.$getByHandle('datepickerModalContent').freezeScroll(true);
+            $scope.appointment = {};
+            $scope.datePickerModal.hide();
+        }
 
     }]);

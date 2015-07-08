@@ -3,7 +3,7 @@
         
         <button class="button button-icon button-clear" ng-class="{'ion-android-close': datePickerModalSlider.currentIndex() == 0, 'ion-ios-arrow-left' : datePickerModalSlider.currentIndex() > 0}" ng-click="closeDatePicker()"></button>
         
-        <h3 class="title">{{newEventShift}} {{newEventDate}}</h3>
+        <h3 class="title">{{newEventShift}} {{appointmentDateFormated}}</h3>
     </ion-header-bar>
     
     <ion-content delegate-handle="datepickerModalContent">
@@ -21,7 +21,7 @@
                 <div class="list">
                     <label class="item item-input item-stacked-label">
                         <span class="input-label">Patient Name</span>
-                        <input type="text" placeholder="John Doe" ng-model="newEvent.title">
+                        <input type="text" placeholder="John Doe" ng-model="appointment.title">
                     </label>
                     <label class="item item-input item-stacked-label">
                         <span class="input-label">Motive</span>
@@ -38,7 +38,7 @@
                     </label>
                     <label class="item item-input item-stacked-label">
                         <span class="input-label">Observations</span>
-                        <input type="text" placeholder="Patient needs a revision.." ng-model="newEvent.description">
+                        <input type="text" placeholder="Patient needs a revision.." ng-model="appointment.description">
                     </label>
                 </div>
             </form>
