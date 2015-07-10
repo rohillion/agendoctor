@@ -1,8 +1,8 @@
 <ul>
-    <li ng-repeat="(key, values) in events | groupBy: 'startsAt'">
+    <li ng-repeat="group in events | groupBy: 'startsAt'| toArray:true | orderBy:'date'">
         <div class="list">
-            <div class="item item-divider">{{key}}</div>
-            <a id="{{value.startsTime}}" ng-repeat="value in values | orderBy:'startsTime'" class="item" href="#">{{value.startsTime}} {{value.title}}</a>
+            <div class="item item-divider">{{group.$key}}</div>
+            <a id="{{event.startsTime}}" ng-repeat="event in group | orderBy:'startsTime'" class="item" href="#">{{event.startsTime}} {{event.title}}</a>
         </div>
     </li>
 </ul>

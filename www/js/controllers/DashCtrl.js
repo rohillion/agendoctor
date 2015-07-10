@@ -21,11 +21,13 @@ agendoctor.controller('DashCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'E
             $scope.loaded = true;
             angular.forEach(items, function (event, key) {
                 if(!event.deletedAt){
+                    console.log(event.startsAt);
+                    console.log(moment(event.startsAt,'YYYY-MM-DD HH:mm').valueOf());
                     $scope.events.push({
                         key: event.$id,
                         title: event.title,
                         type: event.type,
-                        date: event.startsAt,
+                        date: moment(event.startsAt,'YYYY-MM-DD HH:mm').valueOf(),
                         startsAt: moment(event.startsAt).format('dddd D. MMMM'),
                         //endsAt: moment(event.endsAt).toDate(),
                         //startsTime: parseInt(moment(event.startsAt).format('HHmm')),
@@ -41,6 +43,7 @@ agendoctor.controller('DashCtrl', ['$scope', '$ionicModal', 'moment', 'Auth', 'E
                 console.log(ref);
                 if(ref.event === 'child_added'){
                     event = events.$getRecord(ref.key);
+                    
                     $scope.events.push({
                         key: event.$id,
                         title: event.title,
